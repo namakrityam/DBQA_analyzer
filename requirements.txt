@@ -1,11 +1,40 @@
-streamlit
-langchain
-langchain-openai
-langchain-google-genai
-chromadb
-pypdf
-python-dotenv
-tiktoken
-sentence-transformers
-pytesseract
+# streamlit
+# langchain
+# langchain-openai
+# langchain-google-genai
+# chromadb
+# pypdf
+# python-dotenv
+# tiktoken
+# sentence-transformers
+# pytesseract
 
+
+streamlit
+python-dotenv
+
+# LangChain + OpenRouter (OpenAI-compatible)
+langchain
+langchain-core
+langchain-community
+langchain-openai
+openai
+
+# Vector / embeddings
+chromadb
+sentence-transformers
+tiktoken
+
+# Document handling
+pypdf
+python-docx
+pdf2image
+
+# Image + OCR
+pillow
+pytesseract
+opencv-python-headless
+
+# Utilities
+numpy
+tqdm
