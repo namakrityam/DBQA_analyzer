@@ -9,34 +9,33 @@ from docx import Document as DocxDocument
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
 
+
 # ================================
-# CONFIGURATION
+# CONFIGURATION (CROSS-PLATFORM)
 # ================================
 
-POPPLER_PATH = r"D:\Downloads\Release-25.12.0-0\poppler-25.12.0\Library\bin"
-TESSERACT_PATH = r"D:\tesseract-dont_delete_me\tesseract.exe"
 OCR_DPI = 300
 MAX_OCR_PAGES = 20
 
+POPPLER_PATH = None
+TESSERACT_PATH = None
 
+# Detect environment
+if os.name == "nt":  # Windows (local)
+    POPPLER_PATH = r"D:\Downloads\Release-25.12.0-0\poppler-25.12.0\Library\bin"
+    TESSERACT_PATH = r"D:\tesseract-dont_delete_me\tesseract.exe"
 
+else:  # Linux (Streamlit Cloud)
+    POPPLER_PATH = None  # poppler-utils already in PATH
+    TESSERACT_PATH = "tesseract"
 
 # ================================
-# VALIDATION
+# SAFE OCR SETUP (NO CRASH)
 # ================================
 
-if not os.path.exists(POPPLER_PATH):
-    raise EnvironmentError(
-        f"❌ Poppler not found at: {POPPLER_PATH}\n"
-        "Install Poppler and update POPPLER_PATH"
-    )
+if TESSERACT_PATH:
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
-if not os.path.exists(TESSERACT_PATH):
-    raise EnvironmentError(
-        f"❌ Tesseract not found at: {TESSERACT_PATH}"
-    )
-
-pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
 # ================================
 # PDF LOADER
@@ -64,10 +63,11 @@ def load_pdf(uploaded_file):
         images = convert_from_path(
             pdf_path,
             dpi=OCR_DPI,
-            poppler_path=POPPLER_PATH,
+            poppler_path=POPPLER_PATH if POPPLER_PATH else None,
             first_page=1,
             last_page=MAX_OCR_PAGES
         )
+
 
         ocr_docs = []
 
