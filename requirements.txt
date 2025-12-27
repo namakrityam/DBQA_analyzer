@@ -7,6 +7,5 @@ pypdf
 python-dotenv
 tiktoken
 sentence-transformers
-
 pytesseract
 
